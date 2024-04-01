@@ -2,8 +2,11 @@
   "name": "juta",
   "version": "0.1.0",
   "private": true,
+  "engines":{
+    "node":"14.x"
+  },
   "scripts": {
-    "dev": "node index.js",
+    "dev": "next dev",
     "build": "next build",
     "start": "node index.js",
     "lint": "next lint"
