@@ -5,8 +5,9 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const admin = require('firebase-admin');
 // Load environment variables from .env file in development
 require('dotenv').config();
+const cors = require('cors');
 
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = parseInt(process.env.PORT, 10) || 9000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -30,7 +31,7 @@ app.prepare().then(() => {
   const server = express();
   
   server.use(bodyParser.json());
-
+  server.use(cors());
   // List Botpress Conversations
   server.get('/api/chats', async (req, res) => {
     try {
@@ -95,7 +96,7 @@ app.prepare().then(() => {
     try {
       // Make sure to replace 'companyId' with the actual ID you wish to query
       const companyId = "010"; // This should be dynamically determined based on your application's needs
-      const snapshot = await db.collection('companies').doc(companyId).collection('orders').get();
+      const snapshot = await db.collection('orders').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -110,7 +111,7 @@ server.get('/api/firebase/deliveries', async (req, res) => {
     try {
       // Make sure to replace 'companyId' with the actual ID you wish to query
       const companyId = "010"; // This should be dynamically determined based on your application's needs
-      const snapshot = await db.collection('companies').doc(companyId).collection('deliveries').get();
+      const snapshot = await db.collection('deliveries').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -125,7 +126,7 @@ server.get('/api/firebase/materials', async (req, res) => {
     try {
       // Make sure to replace 'companyId' with the actual ID you wish to query
       const companyId = "010"; // This should be dynamically determined based on your application's needs
-      const snapshot = await db.collection('companies').doc(companyId).collection('materials').get();
+      const snapshot = await db.collection('materials').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));

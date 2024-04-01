@@ -2,8 +2,8 @@
   "name": "juta",
   "version": "0.1.0",
   "private": true,
-  "engines":{
-    "node":"20.x"
+  "engines": {
+    "node": "20.x"
   },
   "scripts": {
     "dev": "next dev",
@@ -19,6 +19,7 @@
     "@material-ui/pickers": "^3.3.11",
     "@mui/lab": "^5.0.0-alpha.169",
     "@syncfusion/ej2-react-calendars": "^25.1.37",
+    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "daterangepicker": "^3.1.0",
     "dotenv": "^16.4.5",
