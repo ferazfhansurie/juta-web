@@ -13,15 +13,15 @@ const handle = app.getRequestHandler();
 
 const serviceAccount = require('./firebase.json'); 
 const firebaseConfig = {
-  apiKey: "AIzaSyDOijfOd2G2SnKcOejWPJt2qyzDYe8gYYM",
-  authDomain: "tatapies.firebaseapp.com",
-  projectId: "tatapies",
-  storageBucket: "tatapies.appspot.com",
-  messagingSenderId: "153923200089",
-  appId: "1:153923200089:web:e394f993c09c8c20d9bd48",
-  measurementId: "G-5BGBRYHGLQ"
-};
-
+    apiKey: "AIzaSyCc0oSHlqlX7fLeqqonODsOIC3XA8NI7hc",
+    authDomain: "onboarding-a5fcb.firebaseapp.com",
+    databaseURL: "https://onboarding-a5fcb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "onboarding-a5fcb",
+    storageBucket: "onboarding-a5fcb.appspot.com",
+    messagingSenderId: "334607574757",
+    appId: "1:334607574757:web:2603a69bf85f4a1e87960c",
+    measurementId: "G-2C9J1RY67L"
+  };
 admin.initializeApp({
   firebaseConfig
   });
@@ -94,7 +94,8 @@ app.prepare().then(() => {
   server.get('/api/firebase/orders', async (req, res) => {
     try {
       // Make sure to replace 'companyId' with the actual ID you wish to query
-      const snapshot = await db.collection('orders').get();
+      const companyId = "010"; // This should be dynamically determined based on your application's needs
+      const snapshot = await db.collection('companies').doc(companyId).collection('orders').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -108,8 +109,8 @@ app.prepare().then(() => {
 server.get('/api/firebase/deliveries', async (req, res) => {
     try {
       // Make sure to replace 'companyId' with the actual ID you wish to query
-
-      const snapshot = await db.collection('deliveries').get();
+      const companyId = "010"; // This should be dynamically determined based on your application's needs
+      const snapshot = await db.collection('companies').doc(companyId).collection('deliveries').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -122,13 +123,14 @@ server.get('/api/firebase/deliveries', async (req, res) => {
 });
 server.get('/api/firebase/materials', async (req, res) => {
     try {
-
-      const snapshot = await db.collection('materials').get();
+      // Make sure to replace 'companyId' with the actual ID you wish to query
+      const companyId = "010"; // This should be dynamically determined based on your application's needs
+      const snapshot = await db.collection('companies').doc(companyId).collection('materials').get();
         
       
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       res.json(data);
-console.log(data);
+
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error fetching data from Firestore');
@@ -174,11 +176,9 @@ console.log(data);
 
   // Next.js default handler for all other GET requests
   server.get('*', (req, res) => handle(req, res));
-  server.get('/', function (req, res) {
-    res.send('Bot is running');
-});
-const port = process.env.PORT;
-  server.listen(port, function () {
-    console.log(`Listening on port ${port}...`);
-});
+
+  server.listen(port, err => {
+    if (err) throw err;
+    console.log(`> Ready on http://localhost:${port}`);
+  });
 });
