@@ -2,32 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  body {
+    @apply bg-gray-100 text-gray-800;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .app-bar {
+    @apply bg-blue-500;
+  }
+
+  .toolbar {
+    @apply px-4 py-2 flex justify-between items-center;
+  }
+
+  .logo {
+    @apply text-white text-xl font-bold;
+  }
+
+  .button-settings {
+    @apply text-white;
+  }
+
+  .greeting {
+    @apply text-xl font-bold mb-4;
+  }
+
+  .select-date-range-btn {
+    @apply bg-blue-500 text-white py-2 px-4 rounded-lg;
+  }
+
+  .total-pies-card {
+    @apply bg-white p-4 rounded-lg shadow-md mb-4;
+  }
+
+  .table {
+    @apply w-full bg-white rounded-lg shadow-md;
+  }
+
+  .table-head {
+    @apply bg-gray-200;
+  }
+
+  .table-cell {
+    @apply px-4 py-2 text-left;
+  }
+
+  .chat-container {
+    @apply flex min-h-screen max-h-screen overflow-hidden;
+  }
+
+  .sidebar {
+    @apply w-1/4 bg-gray-800 text-white overflow-y-auto custom-scrollbar;
+  }
+
+  .chat-list-item {
+    @apply px-4 py-2 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors;
+  }
+
+  .chat-list-item-active {
+    @apply bg-gray-900;
+  }
+
+  .chat-content {
+    @apply flex-1 bg-gray-100 overflow-y-auto p-6 flex flex-col space-y-4 custom-scrollbar;
+  }
+
+  .message-in {
+    @apply bg-white max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl mx-1 my-0.5 p-2 rounded-md text-gray-800 self-start;
+  }
+
+  .message-out {
+    @apply bg-green-500 max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl mx-1 my-0.5 p-2 rounded-md text-white self-end;
+  }
+
+  .message-input-container {
+    @apply w-full p-4 flex items-center bg-white border-t-2 border-gray-300;
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .custom-scrollbar {
+    /* Custom scrollbar styles */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
   }
 }
