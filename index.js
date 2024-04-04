@@ -18,14 +18,16 @@ const firebaseConfig = {
     appId: "1:334607574757:web:2603a69bf85f4a1e87960c",
     measurementId: "G-2C9J1RY67L"
   };
+  if (!admin.apps.length) {
 admin.initializeApp({
   firebaseConfig
   });
+}
   const db = admin.firestore();
 
 const botpressRouter = require('./src/app/api/botpress/botpress.js');
 const firebaseRouter = require('./src/app/api/firebase/firebase.js');
-const chatRouter = require('/Users/firaz/Documents/Bots/tatapies/src/app/api/chatRoute.js');
+const chatRouter = require('./src/app/api/botpress/botpress.js');
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
