@@ -117,7 +117,7 @@ useEffect(() => {
 
       try {
         // Fetch the messages for the selected chat
-        const res = await fetch(`/api/messages/${selectedChatId}`);
+        const res = await fetch(`/api/botpress/messages/${selectedChatId}`);
         if (!res.ok) {
           throw new Error(`Failed to fetch messages: ${res.status}`);
         }
@@ -139,7 +139,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch users
-        const usersRes = await fetch('/api/users');
+        const usersRes = await fetch('/api/botpress/users');
         if (!usersRes.ok) {
           throw new Error(`Failed to fetch users: ${usersRes.status}`);
         }
@@ -147,7 +147,7 @@ useEffect(() => {
         console.log('Fetched Users:', usersData.users);
 
         // Fetch chats
-        const chatsRes = await fetch('/api/chats');
+        const chatsRes = await fetch('/api/botpress/chats');
         if (!chatsRes.ok) {
           throw new Error(`Failed to fetch chats: ${chatsRes.status}`);
         }
