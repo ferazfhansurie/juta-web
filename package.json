@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "next build",
-    "start": "NODE_ENV=production node index.js"
+    "start": "next start"
   },
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
