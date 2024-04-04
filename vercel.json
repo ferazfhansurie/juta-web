@@ -3,7 +3,7 @@
   "public": false,
   "builds": [
     {
-      "src": "package.json",
+      "src": "index.js",
       "use": "@vercel/next"
     }
   ],
