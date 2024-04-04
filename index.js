@@ -25,9 +25,9 @@ admin.initializeApp({
 }
   const db = admin.firestore();
 
-const botpressRouter = require('./src/app/api/botpress/botpress.js');
-const firebaseRouter = require('./src/app/api/firebase/firebase.js');
-const chatRouter = require('./src/app/api/botpress/botpress.js');
+const botpressRouter = require('./src/pages/api/botpress/botpress.js');
+const firebaseRouter = require('./src/pages/api/firebase/firebase.js');
+const chatRouter = require('./src/pages/api/botpress/botpress.js');
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';

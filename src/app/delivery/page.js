@@ -59,7 +59,7 @@ const Deliveries = () => {
     const fetchDeliveries = async () => {
       try {
         // Update the endpoint as necessary
-        const response = await fetch('/api/firebase/deliveries');
+        const response = await fetch('/api/deliveries');
         const data = await response.json();
         setDeliveriesData(data);
       } catch (error) {

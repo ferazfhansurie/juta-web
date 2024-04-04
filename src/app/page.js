@@ -97,7 +97,7 @@ const Dashboard = () => {
 
     const fetchMaterials = async () => {
       try {
-        const response = await fetch('/api/firebase/materials');
+        const response = await fetch('/api/materials');
         const data = await response.json();
         setMaterialsData(data);
       } catch (error) {

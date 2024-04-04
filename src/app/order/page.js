@@ -58,7 +58,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('/api/firebase/orders');
+        const response = await fetch('/api/orders');
         const data = await response.json();
         setOrdersData(data);
       } catch (error) {
