@@ -7,8 +7,8 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "next build && node index.js",
-    "start": "node index.js"
+    "build": "next build",
+    "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
