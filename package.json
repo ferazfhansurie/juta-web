@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "next build",
-    "start": "node index.js && next start"
+    "start": "node index.js"
   },
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
