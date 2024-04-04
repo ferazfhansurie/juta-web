@@ -1,16 +1,14 @@
 import admin from 'firebase-admin';
-const firebaseConfig = {
-  apiKey: "AIzaSyDOijfOd2G2SnKcOejWPJt2qyzDYe8gYYM",
-  authDomain: "tatapies.firebaseapp.com",
-  projectId: "tatapies",
-  storageBucket: "tatapies.appspot.com",
-  messagingSenderId: "153923200089",
-  appId: "1:153923200089:web:e394f993c09c8c20d9bd48",
-  measurementId: "G-5BGBRYHGLQ"
-  };
-// Check if we haven't initialized it yet
-admin.initializeApp({
-    firebaseConfig
-    });
+
+// Decode the base64 environment variable to get the service account JSON
+const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf-8'));
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    // Add your databaseURL if necessary
+    // databaseURL: "https://your-database-url.firebaseio.com"
+  });
+}
 
 export default admin;
