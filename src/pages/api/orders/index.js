@@ -1,5 +1,5 @@
 // pages/api/orders/index.js
-import admin from '/Users/firaz/Documents/Bots/tatapies/src/firebase.js'; // Adjust the path based on where you placed the firebaseAdmin.js file
+import admin from '../../../firebase.js'; // Adjust the path based on where you placed the firebaseAdmin.js file
 // Ensure you initialize Firebase Admin somewhere appropriate,
 // such as in a separate utility file or directly within this file if not already initialized
 
