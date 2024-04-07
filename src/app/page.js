@@ -318,7 +318,7 @@ const Dashboard = () => {
     );
   };
 
-  const totalPies = Object.keys(ordersData).length;
+
   const totalOrders = ordersData.reduce((acc, cur) => acc + cur.quantity, 0);
   const handleStartDateChange = (date) => {
     setDateRange([date, dateRange[1]]);
@@ -391,14 +391,6 @@ const Dashboard = () => {
       </MuiPickersUtilsProvider>
         <Grid container spacing={3} justifyContent="center">
    
-          <Grid item xs={12} md={4}>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography color="textSecondary">Total Pies</Typography>
-                <Typography className={classes.dataValue}>{totalPies}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
           <Grid item xs={12} md={4}>
             <Card className={classes.card}>
               <CardContent>
