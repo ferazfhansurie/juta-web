@@ -1,7 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { DatePicker } from '@material-ui/lab';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import Link from 'next/link'; // Import Link from Next.js
+import { subDays } from 'date-fns';
 import {
   makeStyles,
   Grid,
@@ -35,14 +39,14 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     marginBottom: theme.spacing(3),
-    backgroundColor: '#1A202C', // This is an approximation of Tailwind's bg-gray-900
-    color: '#FFFFFF', // White text color
+    backgroundColor: '#1A202C', 
+    color: '#FFFFFF', 
   },
-
   card: {
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+    borderRadius: theme.spacing(2), // Rounded corners
   },
   toolbarButtons: {
     marginLeft: 'auto',
@@ -50,14 +54,18 @@ const useStyles = makeStyles((theme) => ({
   tableContainer: {
     marginTop: theme.spacing(3),
     overflowX: 'auto',
+    borderRadius: theme.spacing(2), // Rounded corners
+    padding: theme.spacing(2), // Padding
   },
   table: {
     minWidth: 650,
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    borderRadius: theme.spacing(2), // Rounded corners
   },
   tableHeader: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
+    borderRadius: theme.spacing(2), // Rounded corners
   },
   tableHeaderCell: {
     color: 'inherit',
@@ -73,42 +81,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const Dashboard = () => {
   const classes = useStyles();
   const [ordersData, setOrdersData] = useState([]);
   const [materialsData, setMaterialsData] = useState([]);
   const [materialsNeeded, setMaterialsNeeded] = useState({});
   const [priorityCriteria, setPriorityCriteria] = useState('quantity');
-  const [priorityDate, setPriorityDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dateRange, setDateRange] = useState(null);
-  const toggle = () => setOpen(!open);
-  ////
+  const [isDatePickerOpen, setDatePickerOpen] = useState(false);
+  const [dateRange, setDateRange] = useState([
+    startOfDay(subDays(new Date(), 30)),
+    endOfDay(new Date())
+  ]);
+
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('api/orders');
-        const data = await response.json();
-        setOrdersData(data);
+        // Fetch orders and materials simultaneously
+        const ordersResponse = await fetch('api/orders');
+        const materialsResponse = await fetch('/api/materials');
+        const ordersData = await ordersResponse.json();
+        const materialsData = await materialsResponse.json();
+
+        // Filter orders based on the selected date range
+        const filteredOrders = ordersData.filter((order) => {
+          const orderDate = new Date(order.date); // Assuming 'order.date' is the date property of an order
+          return orderDate >= dateRange[0] && orderDate <= dateRange[1];
+        });
+
+        // Set state with the fetched data
+        setOrdersData(filteredOrders);
+        setMaterialsData(materialsData); // Assuming no date filtering is required for materials
       } catch (error) {
-        console.error('Error fetching orders data:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    const fetchMaterials = async () => {
-      try {
-        const response = await fetch('/api/materials');
-        const data = await response.json();
-        setMaterialsData(data);
-      } catch (error) {
-        console.error('Error fetching materials data:', error);
-      }
-    };
-
-    fetchOrders();
-    fetchMaterials();
-  }, []);
-
+    fetchData();
+  }, [dateRange]);
   useEffect(() => {
     const calculateMaterialsNeeded = () => {
       if (ordersData.length === 0 || materialsData.length === 0) {
@@ -220,6 +230,7 @@ const Dashboard = () => {
 
   const handleDateChange = (date) => {
     setPriorityDate(date);
+    setDatePickerOpen(false); // Close the DatePicker after a date is selected
   };
 
   const handlePriorityChange = (event) => {
@@ -244,11 +255,15 @@ const Dashboard = () => {
     });
   
     return (
+      
       <Paper className={classes.tableContainer}>
+          <Typography spacing={3} variant="h6" gutterBottom>
+          Orders
+        </Typography>
         <Table className={classes.table} aria-label="pie-quantities-table">
           <TableHead className={classes.tableHeader}>
             <TableRow>
-              <TableCell className={classes.tableHeaderCell}>Pie Type</TableCell>
+              <TableCell className={classes.tableHeaderCell}>Pie</TableCell>
               <TableCell className={classes.tableHeaderCell} align="right">Size</TableCell>
               <TableCell className={classes.tableHeaderCell} align="right">Quantity</TableCell>
             </TableRow>
@@ -274,6 +289,9 @@ const Dashboard = () => {
   const renderMaterialsTable = () => {
     return (
       <Paper className={classes.tableContainer}>
+          <Typography spacing={3}  variant="h6" gutterBottom>
+          Material
+        </Typography>
         <Table className={classes.table} aria-label="materials-table">
           <TableHead className={classes.tableHeader}>
             <TableRow>
@@ -302,7 +320,13 @@ const Dashboard = () => {
 
   const totalPies = Object.keys(ordersData).length;
   const totalOrders = ordersData.reduce((acc, cur) => acc + cur.quantity, 0);
-
+  const handleStartDateChange = (date) => {
+    setDateRange([date, dateRange[1]]);
+  };
+  
+  const handleEndDateChange = (date) => {
+    setDateRange([dateRange[0], date]);
+  };
   return (
     <>
       <AppBar position="static" color="inherit" className={classes.appBar}>
@@ -332,10 +356,7 @@ const Dashboard = () => {
 </IconButton>
 
 </Link>
-          <IconButton color="inherit" onClick={toggle}>
-              <DateRange />
-            </IconButton>
-        
+
 
             <IconButton color="inherit">
               <Settings />
@@ -343,9 +364,33 @@ const Dashboard = () => {
           </div>
         </Toolbar>
       </AppBar>
-   
+    
+      <div>
+
+</div>
       <div className={classes.root}>
+     
+        {/* The grid layout for displaying total pies and orders, and the functions for rendering pie quantities and materials table remain unchanged. */}
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Grid container spacing={3} justify="center" alignItems="center">
+          <Grid item>
+            <DatePicker
+              label="Start Date"
+              value={dateRange[0]}
+              onChange={handleStartDateChange}
+            />
+          </Grid>
+          <Grid item>
+            <DatePicker
+              label="End Date"
+              value={dateRange[1]}
+              onChange={handleEndDateChange}
+            />
+          </Grid>
+        </Grid>
+      </MuiPickersUtilsProvider>
         <Grid container spacing={3} justifyContent="center">
+   
           <Grid item xs={12} md={4}>
             <Card className={classes.card}>
               <CardContent>
@@ -365,10 +410,11 @@ const Dashboard = () => {
         </Grid>
 
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} md={6}>
+          {/* Ensuring each table takes full width using xs={12} */}
+          <Grid item xs={12}>
             {renderPieQuantitiesTable()}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             {renderMaterialsTable()}
           </Grid>
         </Grid>
