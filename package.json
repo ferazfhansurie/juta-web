@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "next build",
-    "start": "next start"
+    "start": "next build && next start"
   },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
